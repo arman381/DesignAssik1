@@ -1,39 +1,70 @@
 package algorithms;
 
-import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Random;
 
 public class Main {
-    private static final Random R = new Random(42);
+    private static final Random RAND = new Random(42);
 
-    public static void main(String[] args) throws Exception {
-        int[] demo = {5, 2, 9, 1, 6, 3};
-        System.out.println("До:   " + Arrays.toString(demo));
-        QuickSort.quickSort(demo);
-        System.out.println("После:" + Arrays.toString(demo));
-        System.out.printf("comparisons=%d, swaps=%d, maxDepth=%d%n",
+    public static void main(String[] args) {
+        System.out.println(" Just testing \n");
+
+        testMergeSort();
+        testQuickSort();
+        testDeterministicSelect();
+        testClosestPair();
+    }
+
+    private static void testMergeSort() {
+        System.out.println("1. MergeSort:");
+        int[] arr = {5, 2, 9, 1, 6, 3};
+        System.out.println("before:" + Arrays.toString(arr));
+        MergeSort.mergeSort(arr);
+        System.out.println("after:" + Arrays.toString(arr));
+        System.out.printf("comparisons: %d, assignments: %d\n\n",
+                MergeSort.comparisons, MergeSort.assignments);
+    }
+
+    private static void testQuickSort() {
+        System.out.println("2. QuickSort:");
+        int[] arr = {9, 3, 7, 1, 8, 2};
+        System.out.println("before:    " + Arrays.toString(arr));
+        QuickSort.quickSort(arr);
+        System.out.println("after: " + Arrays.toString(arr));
+        System.out.printf("comparisons: %d, swaps: %d, Глубина: %d\n\n",
                 QuickSort.comparisons, QuickSort.swaps, QuickSort.maxDepth);
+    }
 
-        int[] sizes = {1_000, 5_000, 10_000, 50_000, 100_000};
-        Path csv = Path.of("qs_metrics.csv");
-        try (PrintWriter out = new PrintWriter(Files.newBufferedWriter(csv))) {
-            out.println("n,millis,comparisons,swaps,maxDepth");
-            for (int n : sizes) {
-                int[] a = R.ints(n, 0, n).toArray();
+    private static void testDeterministicSelect() {
+        System.out.println("3. Deterministic Select:");
+        int[] arr = {3, 1, 4, 1, 5, 9, 2, 6};
+        System.out.println("massive: " + Arrays.toString(arr));
 
-                long t0 = System.nanoTime();
-                QuickSort.quickSort(a);
-                long t1 = System.nanoTime();
-
-                long ms = (t1 - t0) / 1_000_000;
-                out.printf("%d,%d,%d,%d,%d%n",
-                        n, ms, QuickSort.comparisons, QuickSort.swaps, QuickSort.maxDepth);
-                System.out.printf("n=%d -> %d ms, depth=%d%n", n, ms, QuickSort.maxDepth);
-            }
+        for (int k = 1; k <= 3; k++) {
+            int result = DeterministicSelect.select(arr.clone(), k);
+            System.out.printf("%d-th smallest element: %d\n", k, result);
         }
-        System.out.println("CSV записан: " + csv.toAbsolutePath());
+        System.out.printf("comparisons: %d\n\n", DeterministicSelect.comparisons);
+    }
+
+    private static void testClosestPair() {
+        System.out.println("4. Closest Pair:");
+        ClosestPair.Point[] points = {
+                new ClosestPair.Point(1, 2),
+                new ClosestPair.Point(4, 6),
+                new ClosestPair.Point(3, 1),
+                new ClosestPair.Point(5, 4),
+                new ClosestPair.Point(2, 3)
+        };
+
+        System.out.print("points: ");
+        for (ClosestPair.Point p : points) {
+            System.out.printf("(%d,%d) ", p.x, p.y);
+        }
+        System.out.println();
+
+        double distance = ClosestPair.findClosestPair(points);
+        System.out.printf("Minimum distance: %.2f\n", distance);
+        System.out.printf("comparisons: %d\n\n", ClosestPair.comparisons);
     }
 }

@@ -5,48 +5,56 @@ import java.util.Random;
 public class QuickSort {
     private static final Random RAND = new Random();
 
-
-    public static long comparisons = 0, swaps = 0;
+    public static long comparisons = 0;
+    public static long swaps = 0;
     public static int maxDepth = 0;
 
-    public static void quickSort(int[] a) {
-        comparisons = swaps = 0; maxDepth = 0;
-        if (a == null || a.length <= 1) return;
-        quickSort(a, 0, a.length - 1, 1);
+    public static void quickSort(int[] arr) {
+        comparisons = 0;
+        swaps = 0;
+        maxDepth = 0;
+        if (arr == null || arr.length <= 1) return;
+        quickSort(arr, 0, arr.length - 1, 1);
     }
 
-    private static void quickSort(int[] a, int lo, int hi, int depth) {
-        while (lo < hi) {
+    private static void quickSort(int[] arr, int low, int high, int depth) {
+        while (low < high) {
             maxDepth = Math.max(maxDepth, depth);
 
-            int p = partition(a, lo, hi);
-            if (p - lo < hi - p) {
-                quickSort(a, lo, p - 1, depth + 1);
-                lo = p + 1;
+            int pivotIndex = partition(arr, low, high);
+
+            if (pivotIndex - low < high - pivotIndex) {
+                quickSort(arr, low, pivotIndex - 1, depth + 1);
+                low = pivotIndex + 1;
             } else {
-                quickSort(a, p + 1, hi, depth + 1);
-                hi = p - 1;
+                quickSort(arr, pivotIndex + 1, high, depth + 1);
+                high = pivotIndex - 1;
             }
         }
     }
 
-    private static int partition(int[] a, int lo, int hi) {
-        int pv = lo + RAND.nextInt(hi - lo + 1);
-        int pivot = a[pv];
-        swap(a, pv, hi);
+    private static int partition(int[] arr, int low, int high) {
+        int randomIndex = low + RAND.nextInt(high - low + 1);
+        int pivot = arr[randomIndex];
+        swap(arr, randomIndex, high);
 
-        int i = lo;
-        for (int j = lo; j < hi; j++) {
+        int i = low;
+        for (int j = low; j < high; j++) {
             comparisons++;
-            if (a[j] < pivot) swap(a, i++, j);
+            if (arr[j] < pivot) {
+                swap(arr, i, j);
+                i++;
+            }
         }
-        swap(a, i, hi);
+        swap(arr, i, high);
         return i;
     }
 
-    private static void swap(int[] a, int i, int j) {
+    private static void swap(int[] arr, int i, int j) {
         if (i == j) return;
-        int t = a[i]; a[i] = a[j]; a[j] = t;
+        int temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
         swaps++;
     }
 }
