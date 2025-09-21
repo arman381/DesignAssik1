@@ -54,7 +54,7 @@ public class MergeSort {
         }
     }
 
-    // Мини-тест
+//test
     public static void main(String[] args) {
         int[] arr = {5, 2, 9, 1, 5, 6};
         Metrics m = new Metrics();
