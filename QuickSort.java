@@ -3,58 +3,64 @@ package algorithms;
 import java.util.Random;
 
 public class QuickSort {
-    private static final Random RAND = new Random();
+    private static final Random RAND = new Random(42);
 
     public static long comparisons = 0;
-    public static long swaps = 0;
+    public static long assignments = 0;
     public static int maxDepth = 0;
 
     public static void quickSort(int[] arr) {
         comparisons = 0;
-        swaps = 0;
+        assignments = 0;
         maxDepth = 0;
         if (arr == null || arr.length <= 1) return;
         quickSort(arr, 0, arr.length - 1, 1);
     }
 
-    private static void quickSort(int[] arr, int low, int high, int depth) {
-        while (low < high) {
+    private static void quickSort(int[] a, int left, int right, int depth) {
+        while (left < right) {
             maxDepth = Math.max(maxDepth, depth);
+            int pivotIndex = randomizedPartition(a, left, right);
+            int leftSize = pivotIndex - left;
+            int rightSize = right - pivotIndex;
 
-            int pivotIndex = partition(arr, low, high);
 
-            if (pivotIndex - low < high - pivotIndex) {
-                quickSort(arr, low, pivotIndex - 1, depth + 1);
-                low = pivotIndex + 1;
+            if (leftSize < rightSize) {
+                if (left < pivotIndex - 1) quickSort(a, left, pivotIndex - 1, depth + 1);
+                left = pivotIndex + 1;
             } else {
-                quickSort(arr, pivotIndex + 1, high, depth + 1);
-                high = pivotIndex - 1;
+                if (pivotIndex + 1 < right) quickSort(a, pivotIndex + 1, right, depth + 1);
+                right = pivotIndex - 1;
             }
         }
     }
 
-    private static int partition(int[] arr, int low, int high) {
-        int randomIndex = low + RAND.nextInt(high - low + 1);
-        int pivot = arr[randomIndex];
-        swap(arr, randomIndex, high);
+    private static int randomizedPartition(int[] a, int left, int right) {
+        int randIndex = left + RAND.nextInt(right - left + 1);
+        swap(a, randIndex, right);
+        return partition(a, left, right);
+    }
 
-        int i = low;
-        for (int j = low; j < high; j++) {
+    private static int partition(int[] a, int left, int right) {
+        int pivot = a[right];
+        assignments++;
+        int i = left - 1;
+        for (int j = left; j < right; j++) {
             comparisons++;
-            if (arr[j] < pivot) {
-                swap(arr, i, j);
+            if (a[j] <= pivot) {
                 i++;
+                swap(a, i, j);
             }
         }
-        swap(arr, i, high);
-        return i;
+        swap(a, i + 1, right);
+        return i + 1;
     }
 
-    private static void swap(int[] arr, int i, int j) {
+    private static void swap(int[] a, int i, int j) {
         if (i == j) return;
-        int temp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = temp;
-        swaps++;
+        int tmp = a[i];
+        a[i] = a[j];
+        a[j] = tmp;
+        assignments += 3;
     }
 }

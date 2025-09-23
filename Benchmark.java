@@ -20,7 +20,7 @@ public class Benchmark {
             for (int n : ns) {
                 int[] base = randomArray(n);
 
-                // MergeSort
+
                 int[] a = base.clone();
                 long t0 = System.nanoTime();
                 MergeSort.mergeSort(a);
@@ -28,7 +28,7 @@ public class Benchmark {
                 fw.write(String.format("MergeSort,%d,%.3f,%d,%d,%d\n",
                         n, (t1 - t0) / 1e6, MergeSort.comparisons, MergeSort.assignments, 0));
 
-                // QuickSort
+
                 a = base.clone();
                 t0 = System.nanoTime();
                 QuickSort.quickSort(a);
@@ -36,7 +36,7 @@ public class Benchmark {
                 fw.write(String.format("QuickSort,%d,%.3f,%d,%d,%d\n",
                         n, (t1 - t0) / 1e6, QuickSort.comparisons, QuickSort.assignments, QuickSort.maxDepth));
 
-                // DeterministicSelect
+
                 a = base.clone();
                 int k = n / 2;
                 t0 = System.nanoTime();

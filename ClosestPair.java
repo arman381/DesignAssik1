@@ -33,6 +33,7 @@ public class ClosestPair {
         Point[] rightY = new Point[right - mid];
         int leftIdx = 0, rightIdx = 0;
 
+
         for (Point point : pointsY) {
             comparisons++;
             if (point.x <= midPoint.x && leftIdx < leftY.length) {
@@ -49,7 +50,7 @@ public class ClosestPair {
         Point[] strip = new Point[right - left + 1];
         int stripSize = 0;
         for (Point point : pointsY) {
-            comparisons++;
+            comparisons++; 
             if (Math.abs(point.x - midPoint.x) < d) {
                 strip[stripSize++] = point;
             }

@@ -32,7 +32,7 @@ public class Main {
         QuickSort.quickSort(arr);
         System.out.println("after: " + Arrays.toString(arr));
         System.out.printf("comparisons: %d, swaps: %d, Глубина: %d\n\n",
-                QuickSort.comparisons, QuickSort.swaps, QuickSort.maxDepth);
+                QuickSort.comparisons, QuickSort.assignments , QuickSort.maxDepth);
     }
 
     private static void testDeterministicSelect() {
